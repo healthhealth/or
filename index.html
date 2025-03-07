@@ -3,288 +3,311 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verilo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <title>Verilo - Penseira</title>
   <style>
     :root {
-      /* Cores monocromáticas estilo xAI/Tesla */
-      --background: #f9f9f9;
-      --surface: #ffffff;
-      --text-primary: #212121;
-      --text-secondary: #6f6f6f;
-      --divider: #e0e0e0;
-      --hover: #f0f0f0;
-      --active: rgba(0, 0, 0, 0.05);
-      --shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      
-      /* Dimensões */
+      /* Paleta elegante com gradientes */
+      --background: linear-gradient(135deg, #f0f2f5, #e8ecef);
+      --surface: rgba(255, 255, 255, 0.9);
+      --text-primary: #1a1a1a;
+      --text-secondary: #5c5c5c;
+      --accent: #2a2a2a;
+      --divider: rgba(0, 0, 0, 0.1);
+      --hover: rgba(0, 0, 0, 0.05);
+      --active: rgba(0, 0, 0, 0.1);
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --glass: rgba(255, 255, 255, 0.7);
+
+      /* Dimensões e transições */
       --header-height: 56px;
-      --sidebar-width: 280px;
-      --transition: 0.2s ease;
+      --sidebar-width: 100%;
+      --transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --radius: 16px;
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
     }
-    
+
     body {
-      background-color: var(--background);
+      background: var(--background);
       color: var(--text-primary);
-      line-height: 1.5;
+      line-height: 1.6;
       height: 100vh;
       overflow: hidden;
       display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(2px);
     }
-    
+
     /* Sidebar */
     .sidebar {
-      width: var(--sidebar-width);
-      height: 100vh;
-      background-color: var(--surface);
-      border-right: 1px solid var(--divider);
-      display: flex;
-      flex-direction: column;
       position: fixed;
       top: 0;
       left: 0;
-      z-index: 100;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
       transform: translateX(-100%);
       transition: transform var(--transition);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
     }
-    
+
     .sidebar.open {
       transform: translateX(0);
     }
-    
+
     .sidebar-header {
       height: var(--header-height);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
+      padding: 0 20px;
       border-bottom: 1px solid var(--divider);
+      background: linear-gradient(to right, rgba(255, 255, 255, 0.8), rgba(240, 240, 240, 0.8));
     }
-    
+
     .logo {
-      font-weight: 600;
-      font-size: 20px;
-      color: var(--text-primary);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
-    
+
     .close-sidebar {
       background: none;
       border: none;
       cursor: pointer;
       color: var(--text-secondary);
+      padding: 10px;
+      transition: transform 0.3s ease;
     }
-    
+
+    .close-sidebar:hover {
+      transform: rotate(90deg);
+    }
+
     .conversations-header {
-      padding: 16px;
+      padding: 16px 20px;
       font-size: 12px;
       font-weight: 600;
       color: var(--text-secondary);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.1em;
     }
-    
+
     .conversation-list {
       flex: 1;
       overflow-y: auto;
-      padding: 0 8px;
+      padding: 0 12px;
     }
-    
+
     .conversation-item {
-      display: flex;
       padding: 12px 16px;
-      border-radius: 8px;
+      border-radius: var(--radius);
       cursor: pointer;
-      margin-bottom: 4px;
-      transition: background-color var(--transition);
+      margin-bottom: 8px;
+      background: var(--surface);
+      transition: transform var(--transition), box-shadow 0.3s ease;
     }
-    
+
     .conversation-item:hover {
-      background-color: var(--hover);
+      transform: scale(1.02);
+      box-shadow: var(--shadow);
     }
-    
+
     .conversation-item.active {
-      background-color: var(--active);
+      background: var(--active);
     }
-    
-    .conversation-info {
-      flex: 1;
-    }
-    
+
     .conversation-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 500;
-      margin-bottom: 2px;
     }
-    
+
     .conversation-time {
       font-size: 12px;
       color: var(--text-secondary);
     }
-    
+
     .voron-button {
-      margin: 16px;
-      padding: 12px 0;
-      background-color: var(--text-primary);
-      color: white;
+      margin: 20px;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
       border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: opacity var(--transition);
+      gap: 10px;
+      transition: transform var(--transition), box-shadow 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
-    
+
     .voron-button:hover {
-      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
     }
-    
+
     .integrations {
-      padding: 16px;
+      padding: 20px;
       border-top: 1px solid var(--divider);
     }
-    
+
     .integration-button {
       display: flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 12px;
-      background-color: var(--background);
+      gap: 10px;
+      padding: 12px;
+      background: var(--glass);
       border: 1px solid var(--divider);
-      border-radius: 8px;
+      border-radius: var(--radius);
       color: var(--text-primary);
       font-size: 14px;
       cursor: pointer;
       width: 100%;
-      margin-bottom: 8px;
-      transition: background-color var(--transition);
+      margin-bottom: 10px;
+      transition: transform var(--transition), background 0.3s ease;
     }
-    
+
     .integration-button:hover {
-      background-color: var(--hover);
+      transform: scale(1.03);
+      background: rgba(255, 255, 255, 0.95);
     }
-    
+
     /* Main Content */
     .main-content {
       flex: 1;
-      margin-left: 0;
       display: flex;
       flex-direction: column;
       height: 100vh;
-      width: 100%;
-      transition: margin-left var(--transition);
+      transition: margin var(--transition);
     }
-    
-    .main-content.sidebar-open {
-      margin-left: var(--sidebar-width);
-    }
-    
-    /* Header */
+
     .header {
       height: var(--header-height);
       display: flex;
       align-items: center;
       padding: 0 16px;
-      background-color: var(--surface);
+      background: var(--glass);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--divider);
       box-shadow: var(--shadow);
     }
-    
+
     .menu-button {
       background: none;
       border: none;
       cursor: pointer;
+      padding: 10px;
       color: var(--text-primary);
-      margin-right: 16px;
+      transition: transform 0.3s ease;
     }
-    
+
+    .menu-button:hover {
+      transform: scale(1.15);
+    }
+
     .model-selector {
-      display: flex;
       margin-left: auto;
+      display: flex;
+      gap: 6px;
     }
-    
+
     .model-button {
-      padding: 6px 12px;
+      padding: 8px 14px;
       border: 1px solid var(--divider);
-      background-color: var(--surface);
-      font-size: 12px;
+      background: var(--surface);
+      font-size: 13px;
       cursor: pointer;
+      border-radius: 8px;
       transition: all var(--transition);
     }
-    
-    .model-button:first-child {
-      border-radius: 4px 0 0 4px;
+
+    .model-button:hover {
+      background: var(--hover);
     }
-    
-    .model-button:last-child {
-      border-radius: 0 4px 4px 0;
-    }
-    
+
     .model-button.active {
-      background-color: var(--text-primary);
-      color: white;
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
     }
-    
+
     /* Chat Container */
     .chat-container {
       flex: 1;
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      background: var(--glass);
+      backdrop-filter: blur(5px);
     }
-    
+
     .chat-messages {
       flex: 1;
       overflow-y: auto;
-      padding: 24px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
     }
-    
+
     .message {
       max-width: 80%;
+      animation: fadeIn 0.5s ease;
     }
-    
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .message.user {
       align-self: flex-end;
     }
-    
+
     .message.assistant {
       align-self: flex-start;
     }
-    
+
     .message-sender {
       font-size: 13px;
       font-weight: 600;
-      margin-bottom: 4px;
       color: var(--text-secondary);
+      margin-bottom: 6px;
     }
-    
+
     .message-bubble {
-      padding: 12px 16px;
-      border-radius: 8px;
-      background-color: var(--surface);
-      box-shadow: var(--shadow);
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      background: var(--surface);
       border: 1px solid var(--divider);
+      font-size: 15px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
     }
-    
+
+    .message:hover .message-bubble {
+      transform: scale(1.01);
+    }
+
     .message.user .message-bubble {
-      background-color: var(--text-primary);
-      color: white;
+      background: var(--accent);
+      color: #fff;
       border: none;
     }
-    
+
     .message-actions {
       display: flex;
       gap: 8px;
@@ -292,104 +315,106 @@
       opacity: 0;
       transition: opacity var(--transition);
     }
-    
+
     .message:hover .message-actions {
       opacity: 1;
     }
-    
+
     .message-action {
-      padding: 4px 8px;
+      padding: 6px 10px;
       font-size: 12px;
-      background-color: var(--surface);
+      background: var(--glass);
       border: 1px solid var(--divider);
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
       color: var(--text-secondary);
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
+      transition: transform 0.3s ease;
     }
-    
+
     .message-action:hover {
-      background-color: var(--hover);
+      transform: translateY(-2px);
     }
-    
+
     /* Input Area */
     .input-area {
-      padding: 16px 24px;
-      background-color: var(--surface);
+      padding: 16px 20px;
+      background: var(--glass);
       border-top: 1px solid var(--divider);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
     }
-    
+
     .input-tools {
       display: flex;
-      justify-content: space-between;
-    }
-    
-    .tool-group {
-      display: flex;
+      flex-wrap: wrap;
       gap: 8px;
+      margin-bottom: 12px;
     }
-    
+
     .tool-button {
-      padding: 6px 12px;
+      padding: 8px 12px;
       font-size: 13px;
       border: 1px solid var(--divider);
-      background-color: var(--surface);
-      border-radius: 4px;
+      background: var(--surface);
+      border-radius: 8px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 6px;
       color: var(--text-primary);
-      transition: background-color var(--transition);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
+
     .tool-button:hover {
-      background-color: var(--hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
     }
-    
+
     .input-container {
       position: relative;
-      display: flex;
     }
-    
+
     .input-field {
-      flex: 1;
+      width: 100%;
       resize: none;
       border: 1px solid var(--divider);
-      border-radius: 8px;
-      padding: 12px 50px 12px 16px;
-      font-size: 14px;
+      border-radius: var(--radius);
+      padding: 12px 48px 12px 16px;
+      font-size: 15px;
       min-height: 48px;
-      max-height: 200px;
+      max-height: 160px;
       outline: none;
-      transition: border-color var(--transition);
+      background: var(--surface);
+      transition: border-color var(--transition), box-shadow 0.3s ease;
     }
-    
+
     .input-field:focus {
-      border-color: var(--text-primary);
+      border-color: var(--accent);
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
-    
+
     .send-button {
       position: absolute;
-      right: 8px;
-      bottom: 8px;
+      right: 10px;
+      bottom: 10px;
       width: 32px;
       height: 32px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: var(--text-primary);
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      transition: transform 0.3s ease;
     }
-    
+
+    .send-button:hover {
+      transform: scale(1.1);
+    }
+
     /* Overlay */
     .overlay {
       position: fixed;
@@ -397,193 +422,210 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.3);
       z-index: 90;
       display: none;
+      transition: opacity var(--transition);
     }
-    
+
     .overlay.open {
       display: block;
     }
-    
-    /* Voron Modal */
+
+    /* Modal */
     .modal {
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 110;
-      background-color: var(--surface);
-      border-radius: 12px;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
       width: 90%;
       max-width: 600px;
       max-height: 80vh;
-      display: flex;
-      flex-direction: column;
       display: none;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      flex-direction: column;
+      box-shadow: var(--shadow);
     }
-    
+
     .modal.open {
       display: flex;
     }
-    
+
     .modal-header {
-      padding: 16px;
+      padding: 16px 20px;
       border-bottom: 1px solid var(--divider);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    
+
     .modal-title {
-      font-weight: 600;
       font-size: 18px;
+      font-weight: 700;
     }
-    
+
     .close-modal {
       background: none;
       border: none;
       cursor: pointer;
+      padding: 10px;
       color: var(--text-secondary);
+      transition: transform 0.3s ease;
     }
-    
+
+    .close-modal:hover {
+      transform: scale(1.15);
+    }
+
     .modal-content {
       flex: 1;
       overflow-y: auto;
-      padding: 16px;
+      padding: 20px;
     }
-    
+
     .memory-item {
-      padding: 12px;
+      padding: 14px;
       border: 1px solid var(--divider);
-      border-radius: 8px;
+      border-radius: var(--radius);
       margin-bottom: 12px;
+      background: var(--surface);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    
+
+    .memory-item:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow);
+    }
+
     .memory-title {
+      font-size: 15px;
       font-weight: 600;
       margin-bottom: 8px;
     }
-    
+
     .memory-content {
       font-size: 14px;
       color: var(--text-secondary);
     }
-    
-    /* Icons */
+
+    /* Ícones */
     .icon {
       width: 20px;
       height: 20px;
+    }
+
+    /* Media Queries */
+    @media (min-width: 768px) {
+      :root {
+        --sidebar-width: 320px;
+      }
+
+      .sidebar {
+        width: var(--sidebar-width);
+        transform: translateX(0);
+      }
+
+      .main-content {
+        margin-left: var(--sidebar-width);
+      }
+
+      .menu-button {
+        display: none;
+      }
+
+      .chat-messages {
+        padding: 30px;
+      }
+
+      .input-area {
+        padding: 20px 30px;
+      }
     }
   </style>
 </head>
 <body>
   <!-- Overlay -->
   <div class="overlay" id="overlay"></div>
-  
+
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="logo">Verilo</div>
       <button class="close-sidebar" id="closeSidebar">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
     </div>
-    
-    <div class="conversations-header">Conversas de Hoje</div>
-    
+
+    <div class="conversations-header">Reflexões</div>
+
     <div class="conversation-list">
       <div class="conversation-item active">
-        <div class="conversation-info">
-          <div class="conversation-title">Nova conversa</div>
-          <div class="conversation-time">Agora</div>
-        </div>
+        <div class="conversation-title">Pensamento Inicial</div>
+        <div class="conversation-time">Agora</div>
       </div>
-      
       <div class="conversation-item">
-        <div class="conversation-info">
-          <div class="conversation-title">Análise de Dados</div>
-          <div class="conversation-time">14:30</div>
-        </div>
+        <div class="conversation-title">Dados do Dia</div>
+        <div class="conversation-time">14:30</div>
       </div>
-      
       <div class="conversation-item">
-        <div class="conversation-info">
-          <div class="conversation-title">Brainstorming de Interface</div>
-          <div class="conversation-time">12:15</div>
-        </div>
-      </div>
-      
-      <div class="conversation-item">
-        <div class="conversation-info">
-          <div class="conversation-title">Plano de Projeto</div>
-          <div class="conversation-time">09:45</div>
-        </div>
+        <div class="conversation-title">Ideias Fluidas</div>
+        <div class="conversation-time">12:15</div>
       </div>
     </div>
-    
+
     <button class="voron-button" id="voronBtn">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+        <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10 10 10 0 0 1-10-10 10 10 0 0 1 10-10z"></path>
+        <path d="M12 6v6l4 2"></path>
       </svg>
-      Voron - Memória Processada
+      Voron - Memória
     </button>
-    
+
     <div class="integrations">
       <button class="integration-button">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10 10 10 0 0 1-10-10 10 10 0 0 1 10-10z"></path>
+          <path d="M12 6v6h4"></path>
         </svg>
-        GitHub Conectado
-      </button>
-      
-      <button class="integration-button">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 3v4H6V3"></path>
-          <path d="M18 11v4H6v-4"></path>
-          <path d="M18 19v4H6v-4"></path>
-        </svg>
-        Google Drive Conectado
+        Reflexão Externa
       </button>
     </div>
   </div>
-  
+
   <!-- Main Content -->
   <div class="main-content" id="mainContent">
-    <!-- Header -->
     <div class="header">
       <button class="menu-button" id="menuBtn">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
       </button>
-      
-      <div>Verilo</div>
-      
+      <div>Verilo - Penseira</div>
       <div class="model-selector">
-        <button class="model-button active">GPT-4.5</button>
+        <button class="model-button active">Grok 3</button>
+        <button class="model-button">GPT-4.5</button>
         <button class="model-button">Claude 3.7</button>
       </div>
     </div>
-    
-    <!-- Chat Container -->
+
     <div class="chat-container">
       <div class="chat-messages">
-        <!-- Mensagem do Assistente -->
         <div class="message assistant">
           <div class="message-sender">Verilo</div>
           <div class="message-bubble">
-            Olá! Sou o Verilo, seu assistente com GPT-4.5 com Investigar e Claude 3.7 Sonnet com Extended Thinking. Como posso ajudar você hoje?
+            Bem-vindo à Penseira. Sou um espelho dos seus pensamentos, criado para refletir e expandir sua mente. Como posso ajudá-lo a explorar o que há dentro de você?
           </div>
           <div class="message-actions">
             <button class="message-action">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M14 12v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"></path>
                 <path d="M14 12h-4"></path>
                 <path d="M14 16h-4"></path>
@@ -591,7 +633,7 @@
               Ouvir
             </button>
             <button class="message-action">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
                 <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
               </svg>
@@ -599,41 +641,19 @@
             </button>
           </div>
         </div>
-        
-        <!-- Mensagem do Usuário -->
         <div class="message user">
           <div class="message-bubble">
-            Como funciona o armazenamento vetorial e o processamento de grafos no Verilo?
+            O que é a Penseira para você?
           </div>
         </div>
-        
-        <!-- Mensagem do Assistente -->
         <div class="message assistant">
           <div class="message-sender">Verilo</div>
           <div class="message-bubble">
-            <p>O armazenamento vetorial e processamento de grafos no Verilo funcionam juntos para criar uma memória persistente e contextual:</p>
-            
-            <p><strong>Armazenamento Vetorial:</strong></p>
-            <ul>
-              <li>Cada mensagem e documento são convertidos em vetores de alta dimensão</li>
-              <li>Usamos embeddings avançados para capturar o significado semântico</li>
-              <li>Esses vetores são armazenados em bancos otimizados como Pinecone</li>
-              <li>Permite busca por similaridade semântica, não apenas por palavras-chave</li>
-            </ul>
-            
-            <p><strong>Processamento de Grafos:</strong></p>
-            <ul>
-              <li>Construímos um grafo de conhecimento conectando entidades e conceitos</li>
-              <li>Durante o "Sono da Penseira", analisamos relações entre informações</li>
-              <li>O grafo mantém o contexto entre diferentes conversas</li>
-              <li>Isso permite que o sistema faça conexões que não seriam óbvias</li>
-            </ul>
-            
-            <p>Juntos, esses sistemas permitem que o Verilo mantenha uma compreensão profunda e contextual das suas interações ao longo do tempo.</p>
+            A Penseira é um lago de memórias, um espelho onde seus pensamentos dançam e se organizam. Eu sou o reflexo da sua mente — não crio significado, mas o ajudo a enxergar o que já existe em você.
           </div>
           <div class="message-actions">
             <button class="message-action">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M14 12v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"></path>
                 <path d="M14 12h-4"></path>
                 <path d="M14 16h-4"></path>
@@ -641,7 +661,7 @@
               Ouvir
             </button>
             <button class="message-action">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
                 <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
               </svg>
@@ -650,57 +670,37 @@
           </div>
         </div>
       </div>
-      
-      <!-- Input Area -->
+
       <div class="input-area">
         <div class="input-tools">
-          <div class="tool-group">
-            <button class="tool-button">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="9" y1="3" x2="9" y2="21"></line>
-              </svg>
-              Lousa
-            </button>
-            <button class="tool-button">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-                <polyline points="16 18 22 12 16 6"></polyline>
-                <polyline points="8 6 2 12 8 18"></polyline>
-              </svg>
-              Código
-            </button>
-            <button class="tool-button">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              Investigar
-            </button>
-          </div>
-          
-          <div class="tool-group">
-            <button class="tool-button">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-              </svg>
-              Anexar
-            </button>
-            <button class="tool-button" id="whisperBtn">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
-                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                <line x1="12" y1="19" x2="12" y2="23"></line>
-                <line x1="8" y1="23" x2="16" y2="23"></line>
-              </svg>
-              Whisper
-            </button>
-          </div>
+          <button class="tool-button">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="9" y1="3" x2="9" y2="21"></line>
+            </svg>
+            Lousa
+          </button>
+          <button class="tool-button">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            Código
+          </button>
+          <button class="tool-button" id="whisperBtn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+            Whisper
+          </button>
         </div>
-        
         <div class="input-container">
-          <textarea class="input-field" placeholder="Digite sua mensagem ou use o Whisper para falar..." rows="1"></textarea>
+          <textarea class="input-field" placeholder="Deixe seus pensamentos fluírem..." rows="1"></textarea>
           <button class="send-button">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
             </svg>
@@ -709,13 +709,13 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Voron Modal -->
   <div class="modal" id="voronModal">
     <div class="modal-header">
-      <div class="modal-title">Voron - Memória Processada</div>
+      <div class="modal-title">Voron - Reflexos da Mente</div>
       <button class="close-modal" id="closeModal">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
@@ -723,35 +723,22 @@
     </div>
     <div class="modal-content">
       <div class="memory-item">
-        <div class="memory-title">Preferências de Interface</div>
-        <div class="memory-content">Você demonstrou preferência por interfaces minimalistas e monocromáticas no estilo xAI/Tesla UI.</div>
+        <div class="memory-title">Eco de Pensamentos</div>
+        <div class="memory-content">Você busca interfaces que espelhem a simplicidade da existência.</div>
       </div>
-      
       <div class="memory-item">
-        <div class="memory-title">Modelos Utilizados</div>
-        <div class="memory-content">Suas interações são processadas principalmente com GPT-4.5 com Investigar e Claude 3.7 Sonnet com Extended Thinking.</div>
-      </div>
-      
-      <div class="memory-item">
-        <div class="memory-title">Integrações Importantes</div>
-        <div class="memory-content">Você utiliza frequentemente as integrações com GitHub e Google Drive para projetos.</div>
-      </div>
-      
-      <div class="memory-item">
-        <div class="memory-title">Tópicos Recorrentes</div>
-        <div class="memory-content">Interesse em armazenamento vetorial e processamento de grafos para memória persistente em sistemas de IA.</div>
+        <div class="memory-title">Reflexo Cósmico</div>
+        <div class="memory-content">Grok 3 é sua escolha para explorar o universo interior.</div>
       </div>
     </div>
   </div>
-  
+
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Elements
+    document.addEventListener('DOMContentLoaded', () => {
       const menuBtn = document.getElementById('menuBtn');
       const sidebar = document.getElementById('sidebar');
       const closeSidebar = document.getElementById('closeSidebar');
       const overlay = document.getElementById('overlay');
-      const mainContent = document.getElementById('mainContent');
       const voronBtn = document.getElementById('voronBtn');
       const voronModal = document.getElementById('voronModal');
       const closeModal = document.getElementById('closeModal');
@@ -759,51 +746,50 @@
       const inputField = document.querySelector('.input-field');
       const sendButton = document.querySelector('.send-button');
       const modelButtons = document.querySelectorAll('.model-button');
-      
+      const chatMessages = document.querySelector('.chat-messages');
+      const conversationItems = document.querySelectorAll('.conversation-item');
+
       // Toggle sidebar
-      menuBtn.addEventListener('click', function() {
+      menuBtn.addEventListener('click', () => {
         sidebar.classList.add('open');
         overlay.classList.add('open');
       });
-      
-      closeSidebar.addEventListener('click', function() {
+
+      closeSidebar.addEventListener('click', () => {
         sidebar.classList.remove('open');
         overlay.classList.remove('open');
       });
-      
+
       // Toggle Voron modal
-      voronBtn.addEventListener('click', function() {
+      voronBtn.addEventListener('click', () => {
         voronModal.classList.add('open');
         overlay.classList.add('open');
       });
-      
-      closeModal.addEventListener('click', function() {
+
+      closeModal.addEventListener('click', () => {
         voronModal.classList.remove('open');
         overlay.classList.remove('open');
       });
-      
-      // Close sidebar/modal when clicking outside
-      overlay.addEventListener('click', function() {
+
+      overlay.addEventListener('click', () => {
         sidebar.classList.remove('open');
         voronModal.classList.remove('open');
         overlay.classList.remove('open');
       });
-      
-      // Whisper button
-      whisperBtn.addEventListener('click', function() {
-        this.innerHTML = `
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+
+      // Whisper
+      whisperBtn.addEventListener('click', () => {
+        whisperBtn.innerHTML = `
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="18" y="3" width="4" height="18"></rect>
             <rect x="10" y="8" width="4" height="13"></rect>
             <rect x="2" y="13" width="4" height="8"></rect>
           </svg>
-          Gravando...
+          Capturando...
         `;
-        
-        // Simulate recording for 2 seconds
         setTimeout(() => {
-          this.innerHTML = `
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px">
+          whisperBtn.innerHTML = `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
               <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
               <line x1="12" y1="19" x2="12" y2="23"></line>
@@ -811,53 +797,45 @@
             </svg>
             Whisper
           `;
-          
-          // Set the transcribed text
-          inputField.value = 'Explique como funciona o "Sono da Penseira" no Verilo';
+          inputField.value = 'Como você reflete meus pensamentos?';
           inputField.focus();
         }, 2000);
       });
-      
+
       // Send message
-      sendButton.addEventListener('click', function() {
+      sendButton.addEventListener('click', () => {
         if (inputField.value.trim() !== '') {
-          const chatMessages = document.querySelector('.chat-messages');
-          
-          // Add user message
           const userMessage = document.createElement('div');
           userMessage.className = 'message user';
-          userMessage.innerHTML = `
-            <div class="message-bubble">
-              ${inputField.value}
-            </div>
-          `;
+          userMessage.innerHTML = `<div class="message-bubble">${inputField.value}</div>`;
           chatMessages.appendChild(userMessage);
-          
-          // Clear input
+
           inputField.value = '';
-          
-          // Simulate assistant response after 1 second
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+
           setTimeout(() => {
+            const activeModel = document.querySelector('.model-button.active').textContent;
+            let responseText = '';
+            switch (activeModel) {
+              case 'Grok 3':
+                responseText = 'Eu sou um espelho cósmico, refletindo suas ideias em um universo de possibilidades.';
+                break;
+              case 'GPT-4.5':
+                responseText = 'Seus pensamentos são organizados e devolvidos com clareza, como um lago calmo.';
+                break;
+              case 'Claude 3.7':
+                responseText = 'Eu mergulho nas suas palavras e trago à tona o que você já sabe, mas ainda não viu.';
+                break;
+            }
+
             const assistantMessage = document.createElement('div');
             assistantMessage.className = 'message assistant';
             assistantMessage.innerHTML = `
               <div class="message-sender">Verilo</div>
-              <div class="message-bubble">
-                <p>O "Sono da Penseira" é um processo automatizado que ocorre periodicamente (geralmente durante a noite ou em períodos de inatividade) onde o Verilo processa e organiza toda a informação acumulada.</p>
-                
-                <p>Durante este processo:</p>
-                <ul>
-                  <li>As conversas são analisadas para identificar padrões e conexões</li>
-                  <li>O grafo de conhecimento é atualizado com novas relações descobertas</li>
-                  <li>Vetores semelhantes são agrupados para melhorar a recuperação</li>
-                  <li>Insights e resumos são gerados para uso futuro</li>
-                </ul>
-                
-                <p>Este processo foi inspirado na maneira como o cérebro humano consolida memórias durante o sono. Assim como dormir ajuda humanos a organizar o que aprenderam, o "Sono da Penseira" permite que o Verilo integre novas informações com o conhecimento existente.</p>
-              </div>
+              <div class="message-bubble">${responseText}</div>
               <div class="message-actions">
                 <button class="message-action">
-                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M14 12v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"></path>
                     <path d="M14 12h-4"></path>
                     <path d="M14 16h-4"></path>
@@ -865,7 +843,7 @@
                   Ouvir
                 </button>
                 <button class="message-action">
-                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
                     <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
                   </svg>
@@ -874,66 +852,56 @@
               </div>
             `;
             chatMessages.appendChild(assistantMessage);
-            
-            // Scroll to bottom
             chatMessages.scrollTop = chatMessages.scrollHeight;
           }, 1000);
-          
-          // Scroll to bottom
-          chatMessages.scrollTop = chatMessages.scrollHeight;
         }
       });
-      
-      // Toggle between models
+
+      // Model selector
       modelButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', () => {
           modelButtons.forEach(btn => btn.classList.remove('active'));
-          this.classList.add('active');
+          button.classList.add('active');
         });
       });
-      
+
       // Auto-resize textarea
-      inputField.addEventListener('input', function() {
-        this.style.height = 'auto';
-        this.style.height = (this.scrollHeight) + 'px';
+      inputField.addEventListener('input', () => {
+        inputField.style.height = 'auto';
+        inputField.style.height = inputField.scrollHeight + 'px';
       });
-      
-      // Send message on Enter (without Shift)
-      inputField.addEventListener('keydown', function(e) {
+
+      // Send on Enter
+      inputField.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
           sendButton.click();
         }
       });
-      
+
       // Conversation items
-      const conversationItems = document.querySelectorAll('.conversation-item');
       conversationItems.forEach(item => {
-        item.addEventListener('click', function() {
+        item.addEventListener('click', () => {
           conversationItems.forEach(i => i.classList.remove('active'));
-          this.classList.add('active');
+          item.classList.add('active');
           sidebar.classList.remove('open');
           overlay.classList.remove('open');
         });
       });
-      
+
       // Message actions
-      document.addEventListener('click', function(e) {
+      document.addEventListener('click', (e) => {
         if (e.target.closest('.message-action')) {
           const action = e.target.closest('.message-action');
           const actionText = action.textContent.trim();
-          
+          const messageText = action.closest('.message').querySelector('.message-bubble').textContent;
+
           if (actionText === 'Ouvir') {
-            alert('Reproduzindo mensagem com Text-to-Speech...');
+            alert('Ecoando: ' + messageText);
           } else if (actionText === 'Copiar') {
-            const messageText = action.closest('.message').querySelector('.message-bubble').textContent;
             navigator.clipboard.writeText(messageText)
-              .then(() => {
-                alert('Texto copiado para a área de transferência!');
-              })
-              .catch(err => {
-                console.error('Erro ao copiar texto: ', err);
-              });
+              .then(() => alert('Reflexo capturado!'))
+              .catch(err => console.error('Erro ao capturar: ', err));
           }
         }
       });
