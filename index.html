@@ -6,7 +6,6 @@
   <title>Verilo - Penseira</title>
   <style>
     :root {
-      /* Paleta elegante com gradientes */
       --background: linear-gradient(135deg, #f0f2f5, #e8ecef);
       --surface: rgba(255, 255, 255, 0.9);
       --text-primary: #1a1a1a;
@@ -17,8 +16,6 @@
       --active: rgba(0, 0, 0, 0.1);
       --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       --glass: rgba(255, 255, 255, 0.7);
-
-      /* Dimensões e transições */
       --header-height: 56px;
       --sidebar-width: 100%;
       --transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -43,7 +40,6 @@
       backdrop-filter: blur(2px);
     }
 
-    /* Sidebar */
     .sidebar {
       position: fixed;
       top: 0;
@@ -77,15 +73,14 @@
     .logo {
       font-size: 22px;
       font-weight: 700;
-      letter-spacing: -0.02em;
     }
 
     .close-sidebar {
       background: none;
       border: none;
       cursor: pointer;
-      color: var(--text-secondary);
       padding: 10px;
+      color: var(--text-secondary);
       transition: transform 0.3s ease;
     }
 
@@ -93,105 +88,60 @@
       transform: rotate(90deg);
     }
 
-    .conversations-header {
-      padding: 16px 20px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .conversation-list {
+    .sidebar-content {
       flex: 1;
       overflow-y: auto;
-      padding: 0 12px;
+      padding: 20px;
     }
 
-    .conversation-item {
+    .conversation-item, .roteiro-item {
       padding: 12px 16px;
       border-radius: var(--radius);
-      cursor: pointer;
-      margin-bottom: 8px;
       background: var(--surface);
-      transition: transform var(--transition), box-shadow 0.3s ease;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: transform var(--transition);
     }
 
-    .conversation-item:hover {
+    .conversation-item:hover, .roteiro-item:hover {
       transform: scale(1.02);
-      box-shadow: var(--shadow);
     }
 
     .conversation-item.active {
       background: var(--active);
     }
 
-    .conversation-title {
-      font-size: 15px;
-      font-weight: 500;
+    .roteiro-tabs {
+      display: flex;
+      padding: 10px 20px;
+      gap: 10px;
+      border-bottom: 1px solid var(--divider);
     }
 
-    .conversation-time {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-
-    .voron-button {
-      margin: 20px;
-      padding: 14px;
-      background: var(--accent);
-      color: #fff;
+    .tab-button {
+      padding: 6px 12px;
+      background: none;
       border: none;
-      border-radius: var(--radius);
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: transform var(--transition), box-shadow 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .voron-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-    }
-
-    .integrations {
-      padding: 20px;
-      border-top: 1px solid var(--divider);
-    }
-
-    .integration-button {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px;
-      background: var(--glass);
-      border: 1px solid var(--divider);
-      border-radius: var(--radius);
-      color: var(--text-primary);
       font-size: 14px;
       cursor: pointer;
-      width: 100%;
-      margin-bottom: 10px;
-      transition: transform var(--transition), background 0.3s ease;
+      color: var(--text-secondary);
+      transition: color var(--transition);
     }
 
-    .integration-button:hover {
-      transform: scale(1.03);
-      background: rgba(255, 255, 255, 0.95);
+    .tab-button.active {
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--accent);
     }
 
-    /* Main Content */
     .main-content {
       flex: 1;
-      display: flex;
+      display: none;
       flex-direction: column;
       height: 100vh;
-      transition: margin var(--transition);
+    }
+
+    .main-content.active {
+      display: flex;
     }
 
     .header {
@@ -218,10 +168,25 @@
       transform: scale(1.15);
     }
 
-    .model-selector {
+    .switch-button {
       margin-left: auto;
+      padding: 8px 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .switch-button:hover {
+      transform: scale(1.05);
+    }
+
+    .model-selector {
       display: flex;
       gap: 6px;
+      margin: 0 10px;
     }
 
     .model-button {
@@ -244,7 +209,6 @@
       border-color: var(--accent);
     }
 
-    /* Chat Container */
     .chat-container {
       flex: 1;
       display: flex;
@@ -295,11 +259,6 @@
       border: 1px solid var(--divider);
       font-size: 15px;
       box-shadow: var(--shadow);
-      transition: transform 0.3s ease;
-    }
-
-    .message:hover .message-bubble {
-      transform: scale(1.01);
     }
 
     .message.user .message-bubble {
@@ -312,12 +271,6 @@
       display: flex;
       gap: 8px;
       margin-top: 8px;
-      opacity: 0;
-      transition: opacity var(--transition);
-    }
-
-    .message:hover .message-actions {
-      opacity: 1;
     }
 
     .message-action {
@@ -328,9 +281,6 @@
       border-radius: 8px;
       cursor: pointer;
       color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
       transition: transform 0.3s ease;
     }
 
@@ -338,7 +288,32 @@
       transform: translateY(-2px);
     }
 
-    /* Input Area */
+    .lousa-container {
+      padding: 10px;
+      background: var(--surface);
+      border: 1px solid var(--divider);
+      border-radius: var(--radius);
+      display: flex;
+      gap: 10px;
+    }
+
+    .lousa-editor, .lousa-preview {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      min-height: 100px;
+      border-radius: 8px;
+    }
+
+    .lousa-editor {
+      border: 1px solid var(--divider);
+      resize: none;
+    }
+
+    .lousa-preview {
+      background: var(--hover);
+    }
+
     .input-area {
       padding: 16px 20px;
       background: var(--glass);
@@ -363,12 +338,11 @@
       align-items: center;
       gap: 6px;
       color: var(--text-primary);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s ease;
     }
 
     .tool-button:hover {
       transform: translateY(-2px);
-      box-shadow: var(--shadow);
     }
 
     .input-container {
@@ -386,12 +360,11 @@
       max-height: 160px;
       outline: none;
       background: var(--surface);
-      transition: border-color var(--transition), box-shadow 0.3s ease;
+      transition: border-color var(--transition);
     }
 
     .input-field:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     }
 
     .send-button {
@@ -415,7 +388,22 @@
       transform: scale(1.1);
     }
 
-    /* Overlay */
+    .roteiro-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: var(--glass);
+      backdrop-filter: blur(5px);
+    }
+
+    .roteiro-content {
+      display: none;
+    }
+
+    .roteiro-content.active {
+      display: block;
+    }
+
     .overlay {
       position: fixed;
       top: 0;
@@ -425,99 +413,12 @@
       background: rgba(0, 0, 0, 0.3);
       z-index: 90;
       display: none;
-      transition: opacity var(--transition);
     }
 
     .overlay.open {
       display: block;
     }
 
-    /* Modal */
-    .modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 110;
-      background: var(--glass);
-      backdrop-filter: blur(10px);
-      border-radius: var(--radius);
-      width: 90%;
-      max-width: 600px;
-      max-height: 80vh;
-      display: none;
-      flex-direction: column;
-      box-shadow: var(--shadow);
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .modal-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--divider);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
-    .close-modal {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 10px;
-      color: var(--text-secondary);
-      transition: transform 0.3s ease;
-    }
-
-    .close-modal:hover {
-      transform: scale(1.15);
-    }
-
-    .modal-content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-    }
-
-    .memory-item {
-      padding: 14px;
-      border: 1px solid var(--divider);
-      border-radius: var(--radius);
-      margin-bottom: 12px;
-      background: var(--surface);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .memory-item:hover {
-      transform: scale(1.02);
-      box-shadow: var(--shadow);
-    }
-
-    .memory-title {
-      font-size: 15px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .memory-content {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-
-    /* Ícones */
-    .icon {
-      width: 20px;
-      height: 20px;
-    }
-
-    /* Media Queries */
     @media (min-width: 768px) {
       :root {
         --sidebar-width: 320px;
@@ -536,7 +437,7 @@
         display: none;
       }
 
-      .chat-messages {
+      .chat-messages, .roteiro-container {
         padding: 30px;
       }
 
@@ -552,56 +453,14 @@
 
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="logo">Verilo</div>
-      <button class="close-sidebar" id="closeSidebar">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-    </div>
-
-    <div class="conversations-header">Reflexões</div>
-
-    <div class="conversation-list">
-      <div class="conversation-item active">
-        <div class="conversation-title">Pensamento Inicial</div>
-        <div class="conversation-time">Agora</div>
-      </div>
-      <div class="conversation-item">
-        <div class="conversation-title">Dados do Dia</div>
-        <div class="conversation-time">14:30</div>
-      </div>
-      <div class="conversation-item">
-        <div class="conversation-title">Ideias Fluidas</div>
-        <div class="conversation-time">12:15</div>
-      </div>
-    </div>
-
-    <button class="voron-button" id="voronBtn">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-        <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10 10 10 0 0 1-10-10 10 10 0 0 1 10-10z"></path>
-        <path d="M12 6v6l4 2"></path>
-      </svg>
-      Voron - Memória
-    </button>
-
-    <div class="integrations">
-      <button class="integration-button">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10 10 10 0 0 1-10-10 10 10 0 0 1 10-10z"></path>
-          <path d="M12 6v6h4"></path>
-        </svg>
-        Reflexão Externa
-      </button>
-    </div>
+    <div class="sidebar-header" id="sidebarHeader"></div>
+    <div class="sidebar-content" id="sidebarContent"></div>
   </div>
 
-  <!-- Main Content -->
-  <div class="main-content" id="mainContent">
+  <!-- Interface 1: Organizador de Pensamentos -->
+  <div class="main-content active" id="pensamentos">
     <div class="header">
-      <button class="menu-button" id="menuBtn">
+      <button class="menu-button" id="menuPensamentos">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -610,82 +469,49 @@
       </button>
       <div>Verilo - Penseira</div>
       <div class="model-selector">
-        <button class="model-button active">Grok 3</button>
-        <button class="model-button">GPT-4.5</button>
-        <button class="model-button">Claude 3.7</button>
+        <button class="model-button active" data-model="o1">o1</button>
+        <button class="model-button" data-model="4.5">GPT-4.5</button>
+        <button class="model-button" data-model="claude">Claude 3.7</button>
+        <button class="model-button" data-model="grok">Grok 3</button>
       </div>
+      <button class="switch-button" id="toRoteiro">Ir para Roteiro</button>
     </div>
-
     <div class="chat-container">
-      <div class="chat-messages">
+      <div class="chat-messages" id="chatMessages">
         <div class="message assistant">
           <div class="message-sender">Verilo</div>
           <div class="message-bubble">
-            Bem-vindo à Penseira. Sou um espelho dos seus pensamentos, criado para refletir e expandir sua mente. Como posso ajudá-lo a explorar o que há dentro de você?
+            Bem-vindo à Penseira. Reflita comigo usando o1, GPT-4.5, Claude 3.7 ou Grok 3. Como posso ajudar no seu trabalho hoje?
           </div>
           <div class="message-actions">
-            <button class="message-action">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M14 12v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"></path>
-                <path d="M14 12h-4"></path>
-                <path d="M14 16h-4"></path>
-              </svg>
-              Ouvir
-            </button>
-            <button class="message-action">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-              </svg>
-              Copiar
-            </button>
-          </div>
-        </div>
-        <div class="message user">
-          <div class="message-bubble">
-            O que é a Penseira para você?
-          </div>
-        </div>
-        <div class="message assistant">
-          <div class="message-sender">Verilo</div>
-          <div class="message-bubble">
-            A Penseira é um lago de memórias, um espelho onde seus pensamentos dançam e se organizam. Eu sou o reflexo da sua mente — não crio significado, mas o ajudo a enxergar o que já existe em você.
-          </div>
-          <div class="message-actions">
-            <button class="message-action">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M14 12v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"></path>
-                <path d="M14 12h-4"></path>
-                <path d="M14 16h-4"></path>
-              </svg>
-              Ouvir
-            </button>
-            <button class="message-action">
-              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-              </svg>
-              Copiar
-            </button>
+            <button class="message-action" data-action="edit">Editar</button>
+            <button class="message-action" data-action="listen">Ouvir</button>
+            <button class="message-action" data-action="copy">Copiar</button>
           </div>
         </div>
       </div>
-
       <div class="input-area">
         <div class="input-tools">
-          <button class="tool-button">
+          <button class="tool-button" id="lousaBtn">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
               <line x1="9" y1="3" x2="9" y2="21"></line>
             </svg>
             Lousa
           </button>
-          <button class="tool-button">
+          <button class="tool-button" id="investigateBtn">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="16 18 22 12 16 6"></polyline>
-              <polyline points="8 6 2 12 8 18"></polyline>
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            Código
+            Investigar
+          </button>
+          <button class="tool-button" id="searchWebBtn">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            SearchWeb
           </button>
           <button class="tool-button" id="whisperBtn">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -698,8 +524,8 @@
           </button>
         </div>
         <div class="input-container">
-          <textarea class="input-field" placeholder="Deixe seus pensamentos fluírem..." rows="1"></textarea>
-          <button class="send-button">
+          <textarea class="input-field" id="inputField" placeholder="Deixe seus pensamentos fluírem..." rows="1"></textarea>
+          <button class="send-button" id="sendButton">
             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -710,152 +536,190 @@
     </div>
   </div>
 
-  <!-- Voron Modal -->
-  <div class="modal" id="voronModal">
-    <div class="modal-header">
-      <div class="modal-title">Voron - Reflexos da Mente</div>
-      <button class="close-modal" id="closeModal">
+  <!-- Interface 2: Organizador da Vida Real -->
+  <div class="main-content" id="roteiro">
+    <div class="header">
+      <button class="menu-button" id="menuRoteiro">
         <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
       </button>
+      <div>Verilo - Roteiro</div>
+      <button class="switch-button" id="toPensamentos">Ir para Pensamentos</button>
     </div>
-    <div class="modal-content">
-      <div class="memory-item">
-        <div class="memory-title">Eco de Pensamentos</div>
-        <div class="memory-content">Você busca interfaces que espelhem a simplicidade da existência.</div>
+    <div class="roteiro-container">
+      <div class="roteiro-tabs">
+        <button class="tab-button active" data-tab="tasks">Tarefas</button>
+        <button class="tab-button" data-tab="emails">E-mails</button>
+        <button class="tab-button" data-tab="agenda">Agenda</button>
+        <button class="tab-button" data-tab="whatsapp">WhatsApp</button>
       </div>
-      <div class="memory-item">
-        <div class="memory-title">Reflexo Cósmico</div>
-        <div class="memory-content">Grok 3 é sua escolha para explorar o universo interior.</div>
+      <div class="roteiro-content active" id="tasks-tab">
+        <div class="roteiro-item">Revisar código - 14:00</div>
+        <div class="roteiro-item">Planejar dia - 09:00</div>
+      </div>
+      <div class="roteiro-content" id="emails-tab">
+        <div class="roteiro-item">Reunião às 10h</div>
+        <div class="roteiro-item">Relatório enviado</div>
+      </div>
+      <div class="roteiro-content" id="agenda-tab">
+        <div class="roteiro-item">10:00 - Reunião</div>
+        <div class="roteiro-item">15:00 - Revisão</div>
+      </div>
+      <div class="roteiro-content" id="whatsapp-tab">
+        <div class="roteiro-item">João: "Oi, tudo bem?"</div>
+        <div class="roteiro-item">Maria: "Reunião confirmada"</div>
       </div>
     </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const menuBtn = document.getElementById('menuBtn');
-      const sidebar = document.getElementById('sidebar');
-      const closeSidebar = document.getElementById('closeSidebar');
       const overlay = document.getElementById('overlay');
-      const voronBtn = document.getElementById('voronBtn');
-      const voronModal = document.getElementById('voronModal');
-      const closeModal = document.getElementById('closeModal');
-      const whisperBtn = document.getElementById('whisperBtn');
-      const inputField = document.querySelector('.input-field');
-      const sendButton = document.querySelector('.send-button');
+      const sidebar = document.getElementById('sidebar');
+      const sidebarHeader = document.getElementById('sidebarHeader');
+      const sidebarContent = document.getElementById('sidebarContent');
+      const menuPensamentos = document.getElementById('menuPensamentos');
+      const menuRoteiro = document.getElementById('menuRoteiro');
+      const closeSidebar = document.getElementById('closeSidebar');
+      const pensamentos = document.getElementById('pensamentos');
+      const roteiro = document.getElementById('roteiro');
+      const toRoteiro = document.getElementById('toRoteiro');
+      const toPensamentos = document.getElementById('toPensamentos');
       const modelButtons = document.querySelectorAll('.model-button');
-      const chatMessages = document.querySelector('.chat-messages');
-      const conversationItems = document.querySelectorAll('.conversation-item');
+      const chatMessages = document.getElementById('chatMessages');
+      const inputField = document.getElementById('inputField');
+      const sendButton = document.getElementById('sendButton');
+      const lousaBtn = document.getElementById('lousaBtn');
+      const investigateBtn = document.getElementById('investigateBtn');
+      const searchWebBtn = document.getElementById('searchWebBtn');
+      const whisperBtn = document.getElementById('whisperBtn');
+
+      let conversationCount = 2;
+
+      // Sidebar content templates
+      const pensamentosSidebar = `
+        <div class="logo">Verilo - Conversas</div>
+        <button class="close-sidebar" id="closeSidebar">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+      const pensamentosContent = `
+        <div class="conversation-item active" data-conversation="1">
+          <div>Pensamento Inicial</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">Agora</div>
+        </div>
+        <div class="conversation-item" data-conversation="2">
+          <div>Dados do Dia</div>
+          <div style="font-size: 12px; color: var(--text-secondary);">14:30</div>
+        </div>
+      `;
+      const roteiroSidebar = `
+        <div class="logo">Verilo - Roteiro</div>
+        <button class="close-sidebar" id="closeSidebar">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+      const roteiroContent = `
+        <div class="roteiro-tabs">
+          <button class="tab-button active" data-tab="tasks">Tarefas</button>
+          <button class="tab-button" data-tab="emails">E-mails</button>
+          <button class="tab-button" data-tab="agenda">Agenda</button>
+          <button class="tab-button" data-tab="whatsapp">WhatsApp</button>
+        </div>
+        <div class="roteiro-content active" id="tasks-tab">
+          <div class="roteiro-item">Revisar código - 14:00</div>
+          <div class="roteiro-item">Planejar dia - 09:00</div>
+        </div>
+        <div class="roteiro-content" id="emails-tab">
+          <div class="roteiro-item">Reunião às 10h</div>
+          <div class="roteiro-item">Relatório enviado</div>
+        </div>
+        <div class="roteiro-content" id="agenda-tab">
+          <div class="roteiro-item">10:00 - Reunião</div>
+          <div class="roteiro-item">15:00 - Revisão</div>
+        </div>
+        <div class="roteiro-content" id="whatsapp-tab">
+          <div class="roteiro-item">João: "Oi, tudo bem?"</div>
+          <div class="roteiro-item">Maria: "Reunião confirmada"</div>
+        </div>
+      `;
+
+      // Initial setup
+      sidebarHeader.innerHTML = pensamentosSidebar;
+      sidebarContent.innerHTML = pensamentosContent;
 
       // Toggle sidebar
-      menuBtn.addEventListener('click', () => {
+      menuPensamentos.addEventListener('click', () => {
+        sidebarHeader.innerHTML = pensamentosSidebar;
+        sidebarContent.innerHTML = pensamentosContent;
         sidebar.classList.add('open');
         overlay.classList.add('open');
+        bindConversationItems();
       });
 
-      closeSidebar.addEventListener('click', () => {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('open');
-      });
-
-      // Toggle Voron modal
-      voronBtn.addEventListener('click', () => {
-        voronModal.classList.add('open');
+      menuRoteiro.addEventListener('click', () => {
+        sidebarHeader.innerHTML = roteiroSidebar;
+        sidebarContent.innerHTML = roteiroContent;
+        sidebar.classList.add('open');
         overlay.classList.add('open');
-      });
-
-      closeModal.addEventListener('click', () => {
-        voronModal.classList.remove('open');
-        overlay.classList.remove('open');
+        bindRoteiroTabs();
       });
 
       overlay.addEventListener('click', () => {
         sidebar.classList.remove('open');
-        voronModal.classList.remove('open');
         overlay.classList.remove('open');
       });
 
-      // Whisper
-      whisperBtn.addEventListener('click', () => {
-        whisperBtn.innerHTML = `
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="18" y="3" width="4" height="18"></rect>
-            <rect x="10" y="8" width="4" height="13"></rect>
-            <rect x="2" y="13" width="4" height="8"></rect>
-          </svg>
-          Capturando...
-        `;
-        setTimeout(() => {
-          whisperBtn.innerHTML = `
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-              <line x1="12" y1="19" x2="12" y2="23"></line>
-              <line x1="8" y1="23" x2="16" y2="23"></line>
-            </svg>
-            Whisper
-          `;
-          inputField.value = 'Como você reflete meus pensamentos?';
-          inputField.focus();
-        }, 2000);
+      // Switch interfaces
+      toRoteiro.addEventListener('click', () => {
+        pensamentos.classList.remove('active');
+        roteiro.classList.add('active');
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
       });
 
-      // Send message
-      sendButton.addEventListener('click', () => {
-        if (inputField.value.trim() !== '') {
-          const userMessage = document.createElement('div');
-          userMessage.className = 'message user';
-          userMessage.innerHTML = `<div class="message-bubble">${inputField.value}</div>`;
-          chatMessages.appendChild(userMessage);
-
-          inputField.value = '';
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-
-          setTimeout(() => {
-            const activeModel = document.querySelector('.model-button.active').textContent;
-            let responseText = '';
-            switch (activeModel) {
-              case 'Grok 3':
-                responseText = 'Eu sou um espelho cósmico, refletindo suas ideias em um universo de possibilidades.';
-                break;
-              case 'GPT-4.5':
-                responseText = 'Seus pensamentos são organizados e devolvidos com clareza, como um lago calmo.';
-                break;
-              case 'Claude 3.7':
-                responseText = 'Eu mergulho nas suas palavras e trago à tona o que você já sabe, mas ainda não viu.';
-                break;
-            }
-
-            const assistantMessage = document.createElement('div');
-            assistantMessage.className = 'message assistant';
-            assistantMessage.innerHTML = `
-              <div class="message-sender">Verilo</div>
-              <div class="message-bubble">${responseText}</div>
-              <div class="message-actions">
-                <button class="message-action">
-                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 12v-4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v4"></path>
-                    <path d="M14 12h-4"></path>
-                    <path d="M14 16h-4"></path>
-                  </svg>
-                  Ouvir
-                </button>
-                <button class="message-action">
-                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                  </svg>
-                  Copiar
-                </button>
-              </div>
-            `;
-            chatMessages.appendChild(assistantMessage);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-          }, 1000);
-        }
+      toPensamentos.addEventListener('click', () => {
+        roteiro.classList.remove('active');
+        pensamentos.classList.add('active');
+        sidebar.classList.remove('open');
+        overlay.classList.remove('open');
       });
+
+      // Bind conversation items
+      function bindConversationItems() {
+        const items = document.querySelectorAll('.conversation-item');
+        items.forEach(item => {
+          item.addEventListener('click', () => {
+            items.forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+          });
+        });
+      }
+
+      // Bind roteiro tabs
+      function bindRoteiroTabs() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const contents = document.querySelectorAll('.roteiro-content');
+        tabButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            button.classList.add('active');
+            document.getElementById(`${button.dataset.tab}-tab`).classList.add('active');
+          });
+        });
+      }
 
       // Model selector
       modelButtons.forEach(button => {
@@ -879,30 +743,178 @@
         }
       });
 
-      // Conversation items
-      conversationItems.forEach(item => {
-        item.addEventListener('click', () => {
-          conversationItems.forEach(i => i.classList.remove('active'));
-          item.classList.add('active');
-          sidebar.classList.remove('open');
-          overlay.classList.remove('open');
+      // Send message
+      sendButton.addEventListener('click', () => {
+        if (inputField.value.trim() !== '') {
+          const userMessage = document.createElement('div');
+          userMessage.className = 'message user';
+          userMessage.innerHTML = `
+            <div class="message-bubble">${inputField.value}</div>
+            <div class="message-actions">
+              <button class="message-action" data-action="edit">Editar</button>
+              <button class="message-action" data-action="listen">Ouvir</button>
+              <button class="message-action" data-action="copy">Copiar</button>
+            </div>
+          `;
+          chatMessages.appendChild(userMessage);
+
+          const activeModel = document.querySelector('.model-button.active').dataset.model;
+          inputField.value = '';
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+
+          setTimeout(() => {
+            let responseText = '';
+            switch (activeModel) {
+              case 'o1':
+                responseText = 'Refleti profundamente: sua ideia é um ponto de partida para o trabalho.';
+                break;
+              case '4.5':
+                responseText = 'Organizei sua ideia com clareza para o seu hub de trabalho.';
+                break;
+              case 'claude':
+                responseText = 'Pensei longamente e vejo conexões úteis no que você disse.';
+                break;
+              case 'grok':
+                responseText = 'Eu, Grok, vejo o cosmos do seu trabalho em suas palavras.';
+                break;
+            }
+
+            if (inputField.value.includes('novo tema') || Math.random() > 0.8) {
+              const newConversation = document.createElement('div');
+              newConversation.className = 'conversation-item';
+              newConversation.dataset.conversation = ++conversationCount;
+              newConversation.innerHTML = `
+                <div>Novo Tema ${conversationCount}</div>
+                <div style="font-size: 12px; color: var(--text-secondary);">Agora</div>
+              `;
+              sidebarContent.appendChild(newConversation);
+              responseText = `Iniciei uma nova conversa temática: "Tema ${conversationCount}". ${responseText}`;
+              bindConversationItems();
+            }
+
+            const assistantMessage = document.createElement('div');
+            assistantMessage.className = 'message assistant';
+            assistantMessage.innerHTML = `
+              <div class="message-sender">Verilo</div>
+              <div class="message-bubble">${responseText}</div>
+              <div class="message-actions">
+                <button class="message-action" data-action="edit">Editar</button>
+                <button class="message-action" data-action="listen">Ouvir</button>
+                <button class="message-action" data-action="copy">Copiar</button>
+              </div>
+            `;
+            chatMessages.appendChild(assistantMessage);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }, 1000);
+        }
+      });
+
+      // Lousa
+      lousaBtn.addEventListener('click', () => {
+        const lousaMessage = document.createElement('div');
+        lousaMessage.className = 'message assistant';
+        lousaMessage.innerHTML = `
+          <div class="message-sender">Verilo</div>
+          <div class="lousa-container">
+            <textarea class="lousa-editor" placeholder="Rascunhe seus pensamentos..."></textarea>
+            <div class="lousa-preview">Pré-visualização aqui.</div>
+          </div>
+          <div class="message-actions">
+            <button class="message-action" data-action="render">Renderizar</button>
+          </div>
+        `;
+        chatMessages.appendChild(lousaMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        const editor = lousaMessage.querySelector('.lousa-editor');
+        const preview = lousaMessage.querySelector('.lousa-preview');
+        editor.addEventListener('input', () => {
+          preview.textContent = editor.value || 'Pré-visualização aqui.';
         });
+      });
+
+      // Investigate
+      investigateBtn.addEventListener('click', () => {
+        const lastMessage = chatMessages.lastElementChild.querySelector('.message-bubble')?.textContent || inputField.value;
+        if (lastMessage) {
+          const assistantMessage = document.createElement('div');
+          assistantMessage.className = 'message assistant';
+          assistantMessage.innerHTML = `
+            <div class="message-sender">Verilo</div>
+            <div class="message-bubble">Investiguei: "${lastMessage}" tem implicações profundas para seu trabalho.</div>
+            <div class="message-actions">
+              <button class="message-action" data-action="edit">Editar</button>
+              <button class="message-action" data-action="listen">Ouvir</button>
+              <button class="message-action" data-action="copy">Copiar</button>
+            </div>
+          `;
+          chatMessages.appendChild(assistantMessage);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      });
+
+      // SearchWeb
+      searchWebBtn.addEventListener('click', () => {
+        const query = inputField.value || 'Pensamentos';
+        const assistantMessage = document.createElement('div');
+        assistantMessage.className = 'message assistant';
+        assistantMessage.innerHTML = `
+          <div class="message-sender">Verilo</div>
+          <div class="message-bubble">Pesquisei: "${query}" sugere ideias para seu hub de trabalho e vida.</div>
+          <div class="message-actions">
+            <button class="message-action" data-action="edit">Editar</button>
+            <button class="message-action" data-action="listen">Ouvir</button>
+            <button class="message-action" data-action="copy">Copiar</button>
+          </div>
+        `;
+        chatMessages.appendChild(assistantMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      });
+
+      // Whisper
+      whisperBtn.addEventListener('click', () => {
+        whisperBtn.innerHTML = 'Capturando...';
+        setTimeout(() => {
+          whisperBtn.innerHTML = `
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+              <line x1="12" y1="19" x2="12" y2="23"></line>
+              <line x1="8" y1="23" x2="16" y2="23"></line>
+            </svg>
+            Whisper
+          `;
+          inputField.value = 'Como organizar meu trabalho hoje?';
+          inputField.focus();
+        }, 2000);
       });
 
       // Message actions
       document.addEventListener('click', (e) => {
-        if (e.target.closest('.message-action')) {
-          const action = e.target.closest('.message-action');
-          const actionText = action.textContent.trim();
-          const messageText = action.closest('.message').querySelector('.message-bubble').textContent;
+        const action = e.target.closest('.message-action');
+        if (!action) return;
+        const message = action.closest('.message');
+        const bubble = message.querySelector('.message-bubble');
+        const actionType = action.dataset.action;
 
-          if (actionText === 'Ouvir') {
-            alert('Ecoando: ' + messageText);
-          } else if (actionText === 'Copiar') {
-            navigator.clipboard.writeText(messageText)
-              .then(() => alert('Reflexo capturado!'))
-              .catch(err => console.error('Erro ao capturar: ', err));
-          }
+        if (actionType === 'edit') {
+          const text = bubble.textContent;
+          bubble.innerHTML = `<textarea class="edit-field">${text}</textarea>`;
+          const editField = bubble.querySelector('.edit-field');
+          editField.focus();
+          editField.addEventListener('blur', () => {
+            bubble.innerHTML = editField.value;
+          });
+        } else if (actionType === 'listen') {
+          alert('Ecoando: ' + bubble.textContent);
+        } else if (actionType === 'copy') {
+          navigator.clipboard.writeText(bubble.textContent)
+            .then(() => alert('Reflexo capturado!'))
+            .catch(err => console.error('Erro ao capturar: ', err));
+        } else if (actionType === 'render') {
+          const editor = message.querySelector('.lousa-editor');
+          const preview = message.querySelector('.lousa-preview');
+          preview.textContent = `Renderizado: ${editor.value}`;
         }
       });
     });
